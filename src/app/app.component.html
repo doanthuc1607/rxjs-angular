@@ -4,7 +4,9 @@
     <div class="todo-wrapper p-0 d-flex flex-column col-md-6 col-sm-8">
       <app-header></app-header>
       <app-todo-list></app-todo-list>
-      <app-footer></app-footer>
+      <!-- |async: giúp cho angular làm việc với obsevable trên template
+          giúp cho template này subscribe vào hasTodo$ lấy giá trị của observable -->
+      <app-footer *ngIf="hastodo$ | async"></app-footer>
     </div>
   </div>
 </div>

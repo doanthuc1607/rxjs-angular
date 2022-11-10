@@ -32,7 +32,7 @@ export class LocalStorageService {
    //T la generic type vd muon getTodo value thi se tra ve todo
    getValue<T>(key:string):T{
      const obj = JSON.parse(this.storage[key]||null);
-     return <T>obj||null;
+     return obj||null;
    }
 
    remove(key:string):any{
