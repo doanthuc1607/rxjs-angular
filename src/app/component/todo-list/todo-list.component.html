@@ -1,3 +1,10 @@
 <!-- |async = todo$.subscribe(next()) -->
 <!-- $event là todo truyền vào lúc emit -->
-<app-todo-item *ngFor="let todo of todo$|async" [todo]="todo" (changeStatus)="onChangeTodoStatus($event)"></app-todo-item>
+<!-- $event trong editTodo chính là todo bên kia truyền vào -->
+<app-todo-item *ngFor="let todo of todo$|async"
+ [todo]="todo"
+  (changeStatus)="onChangeTodoStatus($event)"
+   (editTodo)="onEditTodo($event)"
+   (deleteTodo)="onDeleteTodo($event)"
+   >
+  </app-todo-item>

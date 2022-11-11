@@ -1,11 +1,15 @@
-.todo-input {
-	display: block;
-	width: 100%;
-	padding: 10px 15px;
-	appearance: none;
-	border: none;
-	background-color: #F3F3F3;
-	margin-top: 15px;
-	font-size: 20px;
-	outline: none;
+.icon-wrapper{
+  width:40px;
+  line-height: 45px;
+  font-size: 40px;
+  color: grey;
+  background: white;
+  transition: 250ms all ease-in-out;
+  cursor: pointer;
+  &:hover{
+    color: black;
+  }
+}
+app-todo-input {
+  with:100%;
 }

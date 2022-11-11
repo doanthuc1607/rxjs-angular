@@ -30,7 +30,10 @@ export class TodoService {
   //được gọi khi app vừa chạy nên nó sẽ được gọi trong ngOnInit appComponent.ts
   fetchFromLocalStorage():void {
     this.todos = this.storageService.getValue<Todo[]>(TodoService.TodoStorageKey)||[];
-    this.filteredTodos = [...this.todos.map(todo => ({ ...todo }))];//deepclone lodash
+    this.filteredTodos = [...this.todos];
+    //truyền dữ liệu vào stream
+    //filteredTodos->displayTodosSubject:todo$
+    //todos.length->lengthSubject:length$
     this.updateTodosData();
   }
 
@@ -41,6 +44,7 @@ export class TodoService {
     this.storageService.setObject(TodoService.TodoStorageKey, this.todos);
     //ToDo:filter
     this.filterTodos(this.currentFilter, false);
+    //truyền dữ liệu vào stream
     this.updateTodosData();
   }
 
@@ -68,7 +72,7 @@ export class TodoService {
         break;
       case Filter.Completed: this.filteredTodos = this.todos.filter(todo => todo.isCompleted);
         break;
-      case Filter.All: this.filteredTodos = [...this.todos.map(todo => ({ ...todo }))];
+      case Filter.All: this.filteredTodos = [...this.todos];
         break;
     }
     //trong trường hợp mà ta gọi hàm updateToLocalStorage thì ta không cần update data nữa
@@ -89,4 +93,40 @@ export class TodoService {
     this.updateToLocalStorage();
 
   }
+
+
+  public editTodo(id:number, content:string){
+    //tim index theo id
+    const index = this.todos.findIndex(e=>e.id===id);
+    //lấy ra phần tử có index trên
+    const todo = this.todos[index];
+    todo.content = content;
+    this.todos.splice(index,1, todo);
+    this.updateToLocalStorage();
+  }
+
+  public deleteTodo(id:number){
+    const index = this.todos.findIndex(e=>e.id===id);
+    this.todos.splice(index,1);
+    this.updateToLocalStorage();
+  }
+
+  //sẽ có 3 case: all false->true, one of all true and false->true, all true->false
+ //cần chỉnh sửa chưa work tốt lắm
+  public toggleAll(){
+    this.todos = this.todos.map(todo=>{
+      return {
+        //spread syntax: để copy mảng hoặc object
+      ...todo,
+      isCompleted: this.todos.every (e=>e.isCompleted)
+    }
+  });
+    this.updateToLocalStorage();
+  }
+
+  public clearCompleted(){
+    this.todos = this.todos.filter(todo => !todo.isCompleted);
+    this.updateToLocalStorage();
+  }
+
 }
